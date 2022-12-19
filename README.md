@@ -24,3 +24,5 @@ Python3 should be installed
 
 1. Place order `POST /api/orders/`
 2. Print checks `POST /api/printers/{printer_api_key}/print/`
+
+Swagger OpenAPI doc specified in `api.yaml`
