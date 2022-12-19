@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14-alpine
+    ports:
+      - "5372:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+  htmltopdf:
+    image: openlabs/docker-wkhtmltopdf-aas
+    ports:
+      - "55001:80"
+  celery:
+    restart: always
+    build:
+      context: .
+    container_name: celery
+    command: celery -A sheep_fish_task worker --beat --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - HOST=db
+      - PORT=5432
+      - BROKER_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+      - htmltopdf
+
+
+volumes:
+  postgres_data:

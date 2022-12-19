@@ -1,0 +1,99 @@
+openapi: 3.0.3
+info:
+  title: Restaurant API - OpenAPI 3.0
+  version: 1.0.0
+servers:
+  - url: https://127.0.0.1:8000/api
+paths:
+  /orders:
+    post:
+      summary: Create an order.
+      requestBody:
+        description: Create an order on provided restaurant point with provided order ID
+        content:
+          application/json:
+            schema:
+              type:
+                object
+              properties:
+                order_id:
+                  type: integer
+                point_id:
+                  type: integer
+                data:
+                  type: 
+                    object
+              example:
+                order_id: 1
+                point_id: 1
+                data:
+                  burger: 1
+                  hotdog: 2
+        required: true
+      responses:
+        '200':
+          description: Order is already created
+        '201':
+          description: Order created
+        '400':
+          description: Order data is incorrect or printers are missing on the provided point
+        '405':
+          description: Method not allowed
+  /points/{point_id}/kitchen-print:
+    post:
+      summary: Print rendered kitchen checks on provided point
+      parameters:
+        - name: point_id
+          in: path
+          description: Restaurant point ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: There are no unprinted checks
+        '201':
+          description: Checks are printed
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: string
+                example: ["/media/pdf/12345_kitchen", "/media/pdf/54321_kitchen"]
+        '405':
+          description: Method not allowed
+  /points/{point_id}/client-print:
+    post:
+      summary: Print rendered client checks on provided point with provided order ID
+      parameters:
+        - name: point_id
+          in: path
+          description: Restaurant point ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Provide order ID
+        content:
+          application/json:
+            schema:
+              type:
+                integer
+              example: 
+                12345
+      responses:
+        '200':
+          description: There is no unprinted check with provided order id
+        '201':
+          description: Check is printed
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "/media/pdf/12345_kitchen"
+        '405':
+          description: Method not allowed
+                

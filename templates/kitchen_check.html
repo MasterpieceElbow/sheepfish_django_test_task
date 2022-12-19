@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h1>Kitchen check</h1>
+  <h2>Order id: {{ obj.id }}</h2>
+  <ul>
+    {% for item in obj.data %}
+      <li>
+        {{ item.quantity }} {{ item.name }}
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
