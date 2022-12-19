@@ -26,3 +26,5 @@ Go to `127.0.0.1:8000/admin` and auth with `admin:admin`
 
 1. Place order `POST /api/orders/`
 2. Print checks `POST /api/printers/{printer_api_key}/print/`
+
+Swagger OpenAPI doc specified in `api.yaml`
